@@ -1,24 +1,22 @@
 {
-  "version": 2,
   "buildCommand": "cd fav-links-react && npm install && npm run build",
-  "builds": [
-    {
-      "src": "server/index.js",
-      "use": "@vercel/node"
+  "functions": {
+    "server/index.js": {
+      "runtime": "@vercel/node"
     }
-  ],
-  "routes": [
+  },
+  "rewrites": [
     {
-      "src": "/links(.*)",
-      "dest": "server/index.js"
+      "source": "/links(.*)",
+      "destination": "/server/index.js"
     },
     {
-      "src": "/test",
-      "dest": "server/index.js"
+      "source": "/test",
+      "destination": "/server/index.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "server/index.js"
+      "source": "/(.*)",
+      "destination": "/server/index.js"
     }
   ]
 }
