@@ -2,15 +2,20 @@
 
 const { Pool } = require('pg')
 
-
-const pool = new Pool({
-
-user: process.env.DB_USER || 'me',
-host: process.env.DB_HOST || 'localhost',
-database: process.env.DB_NAME || 'projfive',
-password: process.env.DB_PASSWORD || 'password',
-port: process.env.DB_PORT || 5432
-})
+// Support connection string (e.g., from Neon) or individual components
+const pool = process.env.DATABASE_URL 
+    ? new Pool({
+        connectionString: process.env.DATABASE_URL,
+        // SSL is required for cloud databases like Neon
+        ssl: { rejectUnauthorized: false }
+      })
+    : new Pool({
+        user: process.env.DB_USER || 'me',
+        host: process.env.DB_HOST || 'localhost',
+        database: process.env.DB_NAME || 'projfive',
+        password: process.env.DB_PASSWORD || 'password',
+        port: process.env.DB_PORT || 5432
+      })
 
 //CREATE links
 const createLink = (req, res) => {
