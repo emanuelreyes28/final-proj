@@ -17,11 +17,11 @@ const pool = process.env.DATABASE_URL
         port: process.env.DB_PORT || 5432
       })
 
-//CREATE links
-const createLink = (req, res) => {
-    const { name, url } = req.body
+//CREATE expenses
+const createExpense = (req, res) => {
+    const { expense_type, amount, notes } = req.body
     
-    pool.query('INSERT INTO links (name, url) VALUES ($1, $2) RETURNING *', [name, url], (error, result) => {
+    pool.query('INSERT INTO expenses (expense_type, amount, notes) VALUES ($1, $2, $3) RETURNING *', [expense_type, amount, notes], (error, result) => {
         if(error){
             throw error;
         }
@@ -29,9 +29,9 @@ const createLink = (req, res) => {
     })
 }
 
-//READ links
-const getLinks = (req, res) =>{
-    pool.query('SELECT * FROM links ORDER BY id ASC', (error, result) =>{
+//READ expenses
+const getExpenses = (req, res) =>{
+    pool.query('SELECT * FROM expenses ORDER BY id ASC', (error, result) =>{
         if(error){
             throw error;
         }    
@@ -39,21 +39,21 @@ const getLinks = (req, res) =>{
         })
 }
 
-//DELETE links
-const deleteLink = (req, res) => {
+//DELETE expenses
+const deleteExpense = (req, res) => {
     const id = parseInt(req.params.id)
     
-    pool.query('DELETE FROM links WHERE id = $1', [id], (error, result) => {
+    pool.query('DELETE FROM expenses WHERE id = $1', [id], (error, result) => {
         if(error){
             throw error;
         }
-        res.status(200).json({ message: `Link deleted with ID: ${id}` })
+        res.status(200).json({ message: `Expense deleted with ID: ${id}` })
     })
 }
 
 // export functions
 module.exports = {
-    createLink,
-    getLinks,
-    deleteLink,
+    createExpense,
+    getExpenses,
+    deleteExpense,
 }
