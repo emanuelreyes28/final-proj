@@ -5,75 +5,87 @@ import {useState, useEffect} from 'react'
 
 function LinkContainer(){
     
-const [favLinks, setFavLinks] = useState([])
+const [expenses, setExpenses] = useState([])
 
-// Fetch links from server on component mount
+// Fetch expenses from server on component mount
 useEffect(() => {
-    fetchLinks()
+    fetchExpenses()
 }, [])
 
-const fetchLinks = async () => {
+const fetchExpenses = async () => {
     try {
-        const response = await fetch('/links')
+        const response = await fetch('/expenses')
         const data = await response.json()
-        setFavLinks(data)
+        setExpenses(data)
     } catch (error) {
-        console.error('Error fetching links:', error)
+        console.error('Error fetching expenses:', error)
     }
 }
 
-const handleSubmit = async (newLink) => {
+const handleSubmit = async (newExpense) => {
     try {
-        const response = await fetch('/links', {
+        const response = await fetch('/expenses', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(newLink)
+            body: JSON.stringify(newExpense)
         })
         
         if (response.ok) {
-            const createdLink = await response.json()
-            setFavLinks([...favLinks, createdLink])
+            const createdExpense = await response.json()
+            setExpenses([...expenses, createdExpense])
         } else {
-            console.error('Failed to create link')
+            console.error('Failed to create expense')
         }
     } catch (error) {
-        console.error('Error creating link:', error)
+        console.error('Error creating expense:', error)
     }
 }
 
 const handleRemove = async (index) => {
-    const linkToDelete = favLinks[index]
-    if (!linkToDelete || !linkToDelete.id) {
-        console.error('Link or ID not found')
+    const expenseToDelete = expenses[index]
+    if (!expenseToDelete || !expenseToDelete.id) {
+        console.error('Expense or ID not found')
         return
     }
     
     try {
-        const response = await fetch(`/links/${linkToDelete.id}`, {
+        const response = await fetch(`/expenses/${expenseToDelete.id}`, {
             method: 'DELETE'
         })
         
         if (response.ok) {
-            // Refetch links from server to ensure consistency
-            await fetchLinks()
+            // Refetch expenses from server to ensure consistency
+            await fetchExpenses()
         } else {
             const errorData = await response.json().catch(() => ({}))
-            console.error('Failed to delete link:', errorData)
+            console.error('Failed to delete expense:', errorData)
         }
     } catch (error) {
-        console.error('Error deleting link:', error)
+        console.error('Error deleting expense:', error)
     }
 }
 
+// Calculate total expenses
+const calculateTotal = () => {
+    return expenses.reduce((sum, expense) => {
+        return sum + parseFloat(expense.amount || 0)
+    }, 0)
+}
+
+const total = calculateTotal()
+
     return(
         <div>
-          <h1> My Favorite Links</h1>
-          <p> Add a new link with a name and URL to the table!</p>
-        <Table linkData={favLinks} removeLink={handleRemove} /> 
-        <h1> Add new</h1>
-        <Form onNewLink = {handleSubmit} />
+          <h1>Expense Logging System</h1>
+          <p>Track your expenses by adding the type, amount, and any notes.</p>
+          <Table expenseData={expenses} removeExpense={handleRemove} /> 
+          <div style={{ marginTop: '2rem', padding: '1rem', backgroundColor: '#f5f5f5', border: '2px solid #333', borderRadius: '5px' }}>
+            <h2>Total Expenses: ${total.toFixed(2)}</h2>
+          </div>
+          <h2>Add New Expense</h2>
+          <Form onNewExpense={handleSubmit} />
 
         </div>
     )
