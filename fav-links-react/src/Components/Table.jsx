@@ -4,8 +4,9 @@ function TableHeader(){
 return(
     <thead>
     <tr>
-    <th>Name</th>
-    <th>URL</th>
+    <th>Expense Type</th>
+    <th>Amount</th>
+    <th>Notes</th>
     <th>Remove</th>
   </tr>
   </thead>
@@ -14,15 +15,14 @@ return(
 
 
 const TableBody = (props) => {
-    const rows = props.linkData.map((row, index) => {
+    const rows = props.expenseData.map((row, index) => {
         return(
             <tr key={row.id || index}>
-            <td> {row.name}</td>
+            <td>{row.expense_type}</td>
+            <td>${parseFloat(row.amount || 0).toFixed(2)}</td>
+            <td>{row.notes || '-'}</td>
             <td>
-                <a href={row.url}>{row.url}</a>
-            </td>
-            <td>
-                <button onClick = {() => props.removeLink (index)}>Delete</button>
+                <button onClick = {() => props.removeExpense(index)}>Delete</button>
             </td>
             </tr>
         )
@@ -39,7 +39,7 @@ function Table(props){
     return(
         <table>
             <TableHeader/>
-            <TableBody linkData={props.linkData} removeLink={props.removeLink}/>
+            <TableBody expenseData={props.expenseData} removeExpense={props.removeExpense}/>
            
         </table>
     )
