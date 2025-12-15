@@ -18,15 +18,15 @@ app.use(express.urlencoded({extended: true}))
 const PORT = 9001
 
 //CREATE
-app.post('/links', db.createLink)
+app.post('/expenses', db.createExpense)
 
 //READ
-app.get('/links', db.getLinks)
+app.get('/expenses', db.getExpenses)
 
 //UPDATE
 
 //DELETE
-app.delete('/links/:id', db.deleteLink)
+app.delete('/expenses/:id', db.deleteExpense)
 
 //Other routes
 app.get('/test', (req,res) => {
