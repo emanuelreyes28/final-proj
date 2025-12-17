@@ -1,5 +1,9 @@
 # React + Vite
 
+Live Application
+
+URL: https://final-proj-snowy.vercel.app/
+
 Expense Log System
 Project Overview
 
@@ -23,14 +27,6 @@ DATABASE_URL=your_neon_postgres_url
 
 
 Start the application with npm start
-
-Live Application
-
-🔗 Add live deployment link here
-
-Team Members
-
-GRIM (Individual Project)
 
 Notes / AI Usage
 
