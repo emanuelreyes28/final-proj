@@ -30,4 +30,4 @@ Start the application with npm start
 
 Notes / AI Usage
 
-Cursor’s AI was used as a development aid for guidance on cloud PostgreSQL (Neon) setup and general syntax support. All core application logic and implementation were written manually.
+Cursor’s AI was used as a development aid for guidance on cloud PostgreSQL (Neon) setup and general syntax support. Chat gpt was also used for vercel deployment issues such as database malfunctions.
